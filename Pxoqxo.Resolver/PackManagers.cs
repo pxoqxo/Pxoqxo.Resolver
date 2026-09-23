@@ -58,6 +58,10 @@
 
             return null;
         }
+        public ICollection<PackManager> GetAll()
+        {
+            return managers.Values;
+        }
         public void Lock()
         {
             isLocked = true;
@@ -94,7 +98,7 @@
         {
             if (isLocked)
             {
-                throw new InvalidOperationException("PackManager is locked.");
+                throw new InvalidOperationException("PackManagers object is locked.");
             }
         }
     }
