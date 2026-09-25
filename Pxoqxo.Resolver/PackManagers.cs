@@ -1,4 +1,6 @@
-﻿namespace Pxoqxo.Resolver
+﻿using Pxoqxo.Ext.Core;
+
+namespace Pxoqxo.Resolver
 {
     public sealed class PackManagers
     {
@@ -21,6 +23,7 @@
         public void Add(PackManager item)
         {
             ThrowIfLocked();
+            ThrowIfInvalid(item);
             ThrowIfNotUnique(item);
 
             managers.Add(item.Name, item);
@@ -79,28 +82,41 @@
             return manager;
         }
 
+        private void ThrowIfLocked()
+        {
+            if (isLocked)
+            {
+                throw new InvalidOperationException("PackManagers object is locked.");
+            }
+        }
+        private void ThrowIfInvalid(PackManager item)
+        {
+            if (item.Name.IsNullOrEmptyOrWhiteSpace())
+            {
+                throw new ArgumentException("Item name is required.", nameof(item.Name));
+            }
+            if (item.BaseUrl.IsNullOrEmptyOrWhiteSpace())
+            {
+                throw new ArgumentException("Item base URL is required.", nameof(item.BaseUrl));
+            }
+            if (item.BasePath.IsNullOrEmptyOrWhiteSpace())
+            {
+                throw new ArgumentException("Item base path is required.", nameof(item.BasePath));
+            }
+        }
         private void ThrowIfNotUnique(PackManager item)
         {
             if (names.Contains(item.Name))
             {
                 throw new InvalidOperationException($"A PackManager with the name '{item.Name}' already exists.");
             }
-
             if (baseUrls.Contains(item.BaseUrl))
             {
                 throw new InvalidOperationException($"A PackManager with the base URL '{item.BaseUrl}' already exists.");
             }
-
             if (basePaths.Contains(item.BasePath))
             {
                 throw new InvalidOperationException($"A PackManager with the base path '{item.BasePath}' already exists.");
-            }
-        }
-        private void ThrowIfLocked()
-        {
-            if (isLocked)
-            {
-                throw new InvalidOperationException("PackManagers object is locked.");
             }
         }
     }
