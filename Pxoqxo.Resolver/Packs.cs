@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using Pxoqxo.Ext.Core;
+using System.Collections.ObjectModel;
 
 namespace Pxoqxo.Resolver
 {
@@ -17,6 +18,7 @@ namespace Pxoqxo.Resolver
         public void Add(Pack pack)
         {
             ThrowIfLocked();
+            ThrowIfInvalid(pack);
             packs.Add(pack);
         }
         public bool Remove(Pack pack)
@@ -47,6 +49,41 @@ namespace Pxoqxo.Resolver
             if (isLocked)
             {
                 throw new InvalidOperationException("Packs object is locked.");
+            }
+        }
+        private void ThrowIfInvalid(Pack pack)
+        {
+            if (pack.Manager.IsNullOrEmptyOrWhiteSpace())
+            {
+                throw new ArgumentException("Pack manager is required.", nameof(pack.Manager));
+            }
+            if (pack.Entity.IsNullOrEmptyOrWhiteSpace())
+            {
+                throw new ArgumentException("Pack entity is required.", nameof(pack.Entity));
+            }
+            if (pack.Name.IsNullOrEmptyOrWhiteSpace())
+            {
+                throw new ArgumentException("Pack name is required.", nameof(pack.Name));
+            }
+            if (pack.Version.IsNullOrEmptyOrWhiteSpace())
+            {
+                throw new ArgumentException("Pack version is required.", nameof(pack.Version));
+            }
+            if (pack.Rid.IsNullOrEmptyOrWhiteSpace())
+            {
+                throw new ArgumentException("Pack RID is required.", nameof(pack.Rid));
+            }
+            if (pack.File.IsNullOrEmptyOrWhiteSpace())
+            {
+                throw new ArgumentException("Pack file is required.", nameof(pack.File));
+            }
+            if (!Enum.IsDefined(pack.Type))
+            {
+                throw new ArgumentOutOfRangeException(nameof(pack.Type), pack.Type, "Pack type is invalid.");
+            }
+            if (pack.Type == PackType.Unknown)
+            {
+                throw new ArgumentException("Pack type cannot be Unknown.", nameof(pack.Type));
             }
         }
     }
