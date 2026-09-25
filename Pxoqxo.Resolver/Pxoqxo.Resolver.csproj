@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="Pxoqxo.Ext.Core">
+      <HintPath>..\..\publish\Pxoqxo.Ext\em1.0\portable\Pxoqxo.Ext.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
