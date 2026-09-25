@@ -9,6 +9,8 @@
         private readonly HashSet<string> baseUrls;
         private readonly HashSet<string> basePaths;
 
+        public bool IsLocked => isLocked;
+
         public PackManagers()
         {
             managers = new Dictionary<string, PackManager>();

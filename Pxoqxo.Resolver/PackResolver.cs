@@ -7,14 +7,25 @@ namespace Pxoqxo.Resolver
     {
         public AssemblyLoadContext Context { get; }
         public PackResolverSettings Settings { get; }
+        public Packs Packs { get; }
 
-        public PackResolver() : this(AssemblyLoadContext.Default, new PackResolverSettings()) { }
-        public PackResolver(AssemblyLoadContext context) : this(context, new PackResolverSettings()) { }
-        public PackResolver(PackResolverSettings settings) : this(AssemblyLoadContext.Default, settings) { }
-        public PackResolver(AssemblyLoadContext context, PackResolverSettings settings)
+        public PackResolver(Packs packs) : this(AssemblyLoadContext.Default, new PackResolverSettings(), packs) { }
+        public PackResolver(AssemblyLoadContext context, Packs packs) : this(context, new PackResolverSettings(), packs) { }
+        public PackResolver(PackResolverSettings settings, Packs packs) : this(AssemblyLoadContext.Default, settings, packs) { }
+        public PackResolver(AssemblyLoadContext context, PackResolverSettings settings, Packs packs)
         {
+            if (!settings.Managers.IsLocked)
+            {
+                throw new InvalidOperationException("Cannot initialize PackResolver because the PackManagers object is not locked.");
+            }
+            if (!packs.IsLocked)
+            {
+                throw new InvalidOperationException("Cannot initialize PackResolver because the Packs object is not locked.");
+            }
+
             Context = context;
             Settings = settings;
+            Packs = packs;
 
             if (!Settings.AutoResolve)
             {
@@ -33,6 +44,11 @@ namespace Pxoqxo.Resolver
 
             Context.Resolving -= Context_Resolving;
             Context.ResolvingUnmanagedDll -= Context_ResolvingUnmanagedDll;
+        }
+
+        public void Resolve()
+        {
+
         }
 
         private Assembly? Context_Resolving(AssemblyLoadContext arg1, AssemblyName arg2)

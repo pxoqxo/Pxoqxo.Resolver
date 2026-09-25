@@ -8,6 +8,8 @@ namespace Pxoqxo.Resolver
 
         private readonly List<Pack> packs;
 
+        public bool IsLocked => isLocked;
+
         public Packs()
         {
             packs = new List<Pack>();
