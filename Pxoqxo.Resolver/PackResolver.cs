@@ -1,5 +1,4 @@
-﻿using Pxoqxo.Ext.Core;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 
 namespace Pxoqxo.Resolver
@@ -120,7 +119,7 @@ namespace Pxoqxo.Resolver
                         }
 
                         string? directory = Path.GetDirectoryName(path);
-                        if (!directory.IsNullOrEmpty() && !Directory.Exists(directory))
+                        if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
                         {
                             Directory.CreateDirectory(directory);
                         }

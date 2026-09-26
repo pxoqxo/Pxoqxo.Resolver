@@ -1,5 +1,4 @@
-﻿using Pxoqxo.Ext.Core;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace Pxoqxo.Resolver
 {
@@ -53,27 +52,27 @@ namespace Pxoqxo.Resolver
         }
         private void ThrowIfInvalid(Pack pack)
         {
-            if (pack.Manager.IsNullOrEmptyOrWhiteSpace())
+            if (string.IsNullOrEmpty(pack.Manager) || string.IsNullOrWhiteSpace(pack.Manager))
             {
                 throw new ArgumentException("Pack manager is required.", nameof(pack.Manager));
             }
-            if (pack.Entity.IsNullOrEmptyOrWhiteSpace())
+            if (string.IsNullOrEmpty(pack.Entity) || string.IsNullOrWhiteSpace(pack.Entity))
             {
                 throw new ArgumentException("Pack entity is required.", nameof(pack.Entity));
             }
-            if (pack.Name.IsNullOrEmptyOrWhiteSpace())
+            if (string.IsNullOrEmpty(pack.Name) || string.IsNullOrWhiteSpace(pack.Name))
             {
                 throw new ArgumentException("Pack name is required.", nameof(pack.Name));
             }
-            if (pack.Version.IsNullOrEmptyOrWhiteSpace())
+            if (string.IsNullOrEmpty(pack.Version) || string.IsNullOrWhiteSpace(pack.Version))
             {
                 throw new ArgumentException("Pack version is required.", nameof(pack.Version));
             }
-            if (pack.Rid.IsNullOrEmptyOrWhiteSpace())
+            if (string.IsNullOrEmpty(pack.Rid) || string.IsNullOrWhiteSpace(pack.Rid))
             {
                 throw new ArgumentException("Pack RID is required.", nameof(pack.Rid));
             }
-            if (pack.File.IsNullOrEmptyOrWhiteSpace())
+            if (string.IsNullOrEmpty(pack.File) || string.IsNullOrWhiteSpace(pack.File))
             {
                 throw new ArgumentException("Pack file is required.", nameof(pack.File));
             }

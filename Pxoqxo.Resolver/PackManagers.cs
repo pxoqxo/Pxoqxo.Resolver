@@ -1,6 +1,4 @@
-﻿using Pxoqxo.Ext.Core;
-
-namespace Pxoqxo.Resolver
+﻿namespace Pxoqxo.Resolver
 {
     public sealed class PackManagers
     {
@@ -89,15 +87,15 @@ namespace Pxoqxo.Resolver
         }
         private void ThrowIfInvalid(PackManager item)
         {
-            if (item.Name.IsNullOrEmptyOrWhiteSpace())
+            if (string.IsNullOrEmpty(item.Name) || string.IsNullOrWhiteSpace(item.Name))
             {
                 throw new ArgumentException("Item name is required.", nameof(item.Name));
             }
-            if (item.BaseUrl.IsNullOrEmptyOrWhiteSpace())
+            if (string.IsNullOrEmpty(item.BaseUrl) || string.IsNullOrWhiteSpace(item.BaseUrl))
             {
                 throw new ArgumentException("Item base URL is required.", nameof(item.BaseUrl));
             }
-            if (item.BasePath.IsNullOrEmptyOrWhiteSpace())
+            if (string.IsNullOrEmpty(item.BasePath) || string.IsNullOrWhiteSpace(item.BasePath))
             {
                 throw new ArgumentException("Item base path is required.", nameof(item.BasePath));
             }
