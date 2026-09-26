@@ -20,9 +20,10 @@
         public override string GetPackUrl(Pack pack)
         {
             Uri baseUrl = new Uri(BaseUrl);
+            string file = Path.GetFileNameWithoutExtension(pack.File);
             string extension = Path.GetExtension(pack.File);
 
-            return new Uri(baseUrl, $"{pack.Entity}/releases/download/{pack.Name}/{pack.Version}-{pack.Rid}{extension}").ToString();
+            return new Uri(baseUrl, $"{pack.Entity}/releases/download/{file}/{pack.Version}-{pack.Rid}{extension}").ToString();
         }
         public override string GetPackPath(Pack pack)
         {
