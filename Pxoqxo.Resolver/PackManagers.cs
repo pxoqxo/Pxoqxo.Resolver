@@ -72,10 +72,11 @@ namespace Pxoqxo.Resolver
             isLocked = true;
         }
 
-        public static PackManagers GetDefault()
+        internal static PackManagers GetDefault()
         {
             PackManagers manager = new PackManagers();
             manager.Add(new OxPackManager());
+            manager.Lock();
             return manager;
         }
 
