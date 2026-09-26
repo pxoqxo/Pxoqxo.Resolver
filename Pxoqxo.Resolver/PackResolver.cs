@@ -84,8 +84,8 @@ namespace Pxoqxo.Resolver
                 return;
             }
 
-            string url = GetPackUrl(pack, manager);
-            string path = GetPackPath(pack, manager);
+            string url = manager.GetPackUrl(pack);
+            string path = manager.GetPackPath(pack);
 
             if (!await DownloadIfNotExists(url, path, force))
             {
@@ -100,28 +100,6 @@ namespace Pxoqxo.Resolver
             }
 
             OnResolverStatus(new ResolverStatusEventArgs(pack, ResolverMessage.Finished, ResolverMessageType.Success));
-        }
-        private string GetPackUrl(Pack pack, PackManager manager)
-        {
-            Uri baseUrl = new Uri(manager.BaseUrl);
-            return new Uri(baseUrl,
-                pack.Entity + "/" +
-                pack.Name + "/" +
-                pack.Version + "/" +
-                pack.Rid + "/" +
-                pack.Path + "/" +
-                pack.File).ToString();
-        }
-        private string GetPackPath(Pack pack, PackManager manager)
-        {
-            string basePath = manager.BasePath;
-            return Path.Combine(basePath,
-                pack.Entity,
-                pack.Name,
-                pack.Version,
-                pack.Rid,
-                pack.Path,
-                pack.File);
         }
         private async Task<bool> DownloadIfNotExists(string url, string path, bool force)
         {
