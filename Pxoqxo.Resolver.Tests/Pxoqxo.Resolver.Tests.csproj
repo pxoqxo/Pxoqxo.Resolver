@@ -1,10 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LocalAppData>$([System.Environment]::GetFolderPath(SpecialFolder.LocalApplicationData))</LocalAppData>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pxoqxo.Resolver\Pxoqxo.Resolver.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Pxoqxo.Ext.Core">
+			<HintPath>..\..\publish\Pxoqxo.Ext\em1.0\portable\Pxoqxo.Ext.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="Pxoqxo.Quick">
+			<HintPath>..\..\publish\Pxoqxo.Quick\em1.0\portable\Pxoqxo.Quick.dll</HintPath>
+		</Reference>
+		<Reference Include="Pxoqxo.UnitTest">
+			<HintPath>..\..\publish\Pxoqxo.UnitTest\em1.0\portable\Pxoqxo.UnitTest.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
 </Project>
