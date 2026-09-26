@@ -36,7 +36,7 @@ namespace Pxoqxo.Resolver
         {
             client.Dispose();
         }
-        public async Task Resolve()
+        public async Task Resolve(bool force = false)
         {
             ResolvingEventArgs args = new ResolvingEventArgs();
             OnResolving(args);
@@ -49,7 +49,7 @@ namespace Pxoqxo.Resolver
             ICollection<Pack> packs = Packs.GetAll();
             foreach (Pack pack in packs)
             {
-                await Resolve(pack);
+                await Resolve(pack, force);
             }
 
             OnResolved(new ResolvedEventArgs());
@@ -72,7 +72,7 @@ namespace Pxoqxo.Resolver
             Resolved?.Invoke(this, args);
         }
 
-        private async Task Resolve(Pack pack, bool force = false)
+        private async Task Resolve(Pack pack, bool force)
         {
             OnResolverStatus(new ResolverStatusEventArgs(pack, ResolverMessage.Started, ResolverMessageType.Normal));
 
