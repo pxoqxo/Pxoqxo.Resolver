@@ -87,9 +87,8 @@ namespace Pxoqxo.Resolver
             string url = GetPackUrl(pack, manager);
             string path = GetPackPath(pack, manager);
 
-            if (!await DownloadIfNowExists(url, path, force))
+            if (!await DownloadIfNotExists(url, path, force))
             {
-                DeleteDownloaded(path);
                 OnResolverStatus(new ResolverStatusEventArgs(pack, ResolverMessage.Failed, ResolverMessageType.Error));
                 return;
             }
@@ -124,7 +123,7 @@ namespace Pxoqxo.Resolver
                 pack.Path,
                 pack.File);
         }
-        private async Task<bool> DownloadIfNowExists(string url, string path, bool force)
+        private async Task<bool> DownloadIfNotExists(string url, string path, bool force)
         {
             if (!force && File.Exists(path))
             {
@@ -133,27 +132,35 @@ namespace Pxoqxo.Resolver
 
             try
             {
-                using var request = new HttpRequestMessage(HttpMethod.Get, url);
-                using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-                if (!response.IsSuccessStatusCode)
+                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
                 {
-                    return false;
+                    using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
+                    {
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            return false;
+                        }
+
+                        string? directory = Path.GetDirectoryName(path);
+                        if (!directory.IsNullOrEmpty() && !Directory.Exists(directory))
+                        {
+                            Directory.CreateDirectory(directory);
+                        }
+
+                        using (var remoteStream = await response.Content.ReadAsStreamAsync())
+                        {
+                            using (var localStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, 1048576, true))
+                            {
+                                await remoteStream.CopyToAsync(localStream);
+                                return true;
+                            }
+                        }
+                    }
                 }
-
-                string? directory = Path.GetDirectoryName(path);
-                if (!directory.IsNullOrEmpty() && !Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-
-                using var remoteStream = await response.Content.ReadAsStreamAsync();
-                using var localStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, 1048576, true);
-                await remoteStream.CopyToAsync(localStream);
-
-                return true;
             }
             catch
             {
+                DeleteDownloaded(path);
                 return false;
             }
         }
