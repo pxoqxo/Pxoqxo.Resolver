@@ -75,10 +75,7 @@ namespace Pxoqxo.Resolver
         public static PackManagers GetDefault()
         {
             PackManagers manager = new PackManagers();
-
-            string localFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            manager.Add(new PackManager("0xPack", "https://0xPack.github.io/", Path.Combine(localFolder, "0xPack")));
-
+            manager.Add(new OxPackManager());
             return manager;
         }
 
