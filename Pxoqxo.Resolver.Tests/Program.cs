@@ -2,6 +2,7 @@
 using Pxoqxo.Quick;
 using Pxoqxo.Resolver;
 using Pxoqxo.UnitTest;
+using System.Runtime.InteropServices;
 
 Packs packs = new Packs();
 PackBuilder mainBuilder = PackBuilder.Create()
@@ -55,7 +56,9 @@ resolver.Resolved += (sender, e) =>
 };
 await resolver.Resolve();
 
-OtherBlock();
+OtherBlock();// <- You can call your application logic here. Do not use direct logic.
+
+Console.WriteLine("Press any key to exit...");
 Console.ReadKey();
 
 void OtherBlock()
@@ -79,4 +82,24 @@ void OtherBlock()
         Console.WriteLine("JSON: " + json);
         return true;
     });
+    Test.Run(() =>
+    {
+        WindowsManagedCode managedCode = new WindowsManagedCode();
+        managedCode.MoveMouseLeftToRight();
+        return true;
+    });
+}
+public sealed class WindowsManagedCode
+{
+    [DllImport("user32.dll")]
+    static extern bool SetCursorPos(int X, int Y);
+
+    public void MoveMouseLeftToRight()
+    {
+        for (int x = 0; x <= 2000; x += 10)
+        {
+            SetCursorPos(x, 500);
+            Thread.Sleep(10);
+        }
+    }
 }
